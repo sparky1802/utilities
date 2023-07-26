@@ -1,11 +1,23 @@
-export {addDay, checkLeapYear, numOfDays, numOfMonths, numOfYear, sleep};
+export {addDay, checkLeapYear, monthDays, numOfDays, numOfMonths, numOfYears, sleep};
 
 //Add days return string YYYY-MM-DD format
-function addDay(date, days, timeZone) {
+/*-------------------------------------------------------------------------------------------------
+For deno version 
+deno 1.35.1 (release, x86_64-pc-windows-msvc)
+v8 11.6.189.7
+typescript 5.1.6
+The appears to be a bug where the date 2023-09-30T00:00:00.000Z increments by n-1, where n is the
+number of the increment specific.  To cater for this I check for 2023-09-30 and manually increment
+-------------------------------------------------------------------------------------------------*/
+function addDay(date, days) {
     const newDate = new Date(date);
-//    newDate.setTime(newDate.getTime() + timeZone * 60 * 60 * 1000);
-    newDate.setDate(newDate.getDate() + days);
-    return newDate.toISOString().substring(0,10);
+    console.log(newDate)
+    if (newDate.toISOString().substring(0,10) == "2023-09-30") {
+        return "2023-10-01"
+    } else {
+        newDate.setDate(newDate.getDate() + days);
+        return newDate.toISOString().substring(0,10);
+    };
 };
 
 //Check for a leap year
@@ -17,6 +29,40 @@ function checkLeapYear(year) {
     };
 };
 
+//Number of days in a month
+function monthDays(month, year) {
+    if (month.toUpperCase() = "JAN" || "JANUARY" || "01" || "1" || 1) {
+        return 31;
+    } else if (month.toUpperCase() = "FEB" || "FEBRUARY" || "02" || "2" || 2) {
+        if (checkLeapYear(year) = true) {
+            return 29;
+        } else {
+            return 28;
+        };
+    } else if (month.toUpperCase() = "MAR" || "MARCH" || "03" || "3" || 3) {
+        return 31;
+    } else if (month.toUpperCase() = "APR" || "APRIL" || "04" || "4" || 4) {
+        return 30;
+    } else if (month.toUpperCase() = "MAY" || "MAY" || "05" || "5" || 5) {
+        return 31;
+    } else if (month.toUpperCase() = "JUN" || "JUNE" || "06" || "6" || 6) {
+        return 30;
+    } else if (month.toUpperCase() = "JUL" || "JULY" || "07" || "7" || 7) {
+        return 31;
+    } else if (month.toUpperCase() = "AUG" || "AUGUST" || "08" || "8" || 8) {
+        return 31;
+    } else if (month.toUpperCase() = "SEP" || "SEPTEMBER" || "09" || "9" || 9) {
+        return 30;
+    } else if (month.toUpperCase() = "OCT" || "OCTOBER" || "10" || 10) {
+        return 31;
+    } else if (month.toUpperCase() = "NOV" || "NOVEMBER" || "11" || 11) {
+        return 30;
+    } else if (month.toUpperCase() = "DEC" || "MADECEMBERRCH" || "12" || 12) {
+        return 31;
+    } else {
+        return "incorrect month supplied"  
+    };
+};
 //Count the number of days between two dates
 function numOfDays(startDate, endDate) {
     startDate = new Date(startDate);
@@ -32,7 +78,7 @@ function numOfMonths(startDate, endDate) {
 }
 
 //Count the number of year between two dates (based on year only)
-function numOfYear(startDate, endDate) {
+function numOfYears(startDate, endDate) {
     startDate = new Date(startDate);
     endDate = new Date(endDate);
     return ((endDate.getFullYear() - startDate.getFullYear()));
