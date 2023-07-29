@@ -2,21 +2,20 @@ export {addDay, checkLeapYear, monthDays, numOfDays, numOfMonths, numOfYears, sl
 
 //Add days return string YYYY-MM-DD format
 /*-------------------------------------------------------------------------------------------------
-For deno version 
-deno 1.35.1 (release, x86_64-pc-windows-msvc)
-v8 11.6.189.7
-typescript 5.1.6
-The appears to be a bug where the date 2023-09-30T00:00:00.000Z increments by n-1, where n is the
-number of the increment specific.  To cater for this I check for 2023-09-30 and manually increment
+The appears to be a bug where the certain dates will not increment by 1, but rather n-1 for values
+where n > 0.  For these dates the incremented value will be the same as the provided value.
+A date check is executed check for this anomoly and if true increment by n+1.
 -------------------------------------------------------------------------------------------------*/
 function addDay(date, days) {
     const newDate = new Date(date);
-    console.log(newDate)
-    if (newDate.toISOString().substring(0,10) == "2023-09-30") {
-        return "2023-10-01"
-    } else {
-        newDate.setDate(newDate.getDate() + days);
+    newDate.setDate(newDate.getDate() + days);
+    const checkDate = newDate.toISOString().substring(0,10)
+    if (checkDate === date){
+        newDate.setDate(newDate.getDate() + days + 1);
         return newDate.toISOString().substring(0,10);
+    } else {
+        return newDate.toISOString().substring(0,10);
+
     };
 };
 
